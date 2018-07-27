@@ -12,12 +12,32 @@ namespace StudentsApp.Server.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        // GET: api/Student
+        private readonly List<Student> students;
+
+        public StudentController()
+        {
+            students = new List<Student>
+            {
+                new Student {Id = 1, Name = "Siarhei", Age = 23, Faculty = "Computer tecnology" },
+                new Student {Id = 2, Name = "Pavel", Age = 25, Faculty = "Computer tecnology" },
+                new Student {Id = 3 ,Name = "Elena", Age = 23, Faculty = "Computer tecnology" }
+            };
+        }
+
+        // GET: api/Students
         [HttpGet]
         [Route("Students")]
         public IEnumerable<Student> Get()
         {
-            return new List<Student>{ new Student {Name = "Siarhei", Age = 23, Faculty = "Computer tecnology" }};
+            return students.ToList();
+        }
+
+        // GET: api/Student/{id}
+        [HttpGet("{id}")]
+        [Route("Students")]
+        public Student GetStudent(int id)
+        {
+            return students.First(s => s.Id == id);
         }
     }
 }

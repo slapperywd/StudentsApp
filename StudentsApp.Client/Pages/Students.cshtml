@@ -11,6 +11,8 @@
 }
 else
 {
+  
+    <NewStudentModal OnStudentCreate ="@OnStudentCreate"></NewStudentModal>
     <table class="table">
         <thead>
             <tr>
@@ -35,10 +37,18 @@ else
 }
 
 @functions {
+
     List<Student> students;
 
     protected override async Task OnInitAsync()
     {
-        students = await Http.GetJsonAsync<List<Student>>("api/Student/Students");
+        students = await Http.GetJsonAsync<List<Student>>("api/Student");
+    }
+
+    public void OnStudentCreate(Student stud)
+    {
+        Console.WriteLine($"{stud.Name}, {stud.Age}, {stud.Faculty}");
+        Http.PostJsonAsync($"api/Student", stud);
+
     }
 }

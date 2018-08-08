@@ -12,7 +12,7 @@ namespace StudentsApp.Server.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private readonly List<Student> students;
+        private static List<Student> students;
 
         public StudentController()
         {
@@ -26,7 +26,7 @@ namespace StudentsApp.Server.Controllers
 
         // GET: api/Students
         [HttpGet]
-        [Route("Students")]
+        //[Route("Students")]
         public IEnumerable<Student> Get()
         {
             return students.ToList();
@@ -38,6 +38,21 @@ namespace StudentsApp.Server.Controllers
         public Student GetStudent(int id)
         {
             return students.First(s => s.Id == id);
+        }
+
+        [HttpPost]
+        public IActionResult AddStudent([FromBody] Student student)
+        {
+            if (student == null)
+            {
+                return BadRequest("student is null");
+            }
+
+            student.Id = students.Max(s => s.Id) + 1;
+            students.Add(student);
+
+            return Ok($"Total students {students.Count}");
+            //return CreatedAtRoute("GetStudent", new { id = student.Id }, student);
         }
     }
 }
